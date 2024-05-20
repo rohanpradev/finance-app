@@ -1,0 +1,56 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.7.3/schema.json",
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noUnusedImports": "error",
+        "recommended": true
+      },
+      "suspicious": {
+        "noExplicitAny": "off"
+      },
+      "nursery": {
+        "useSortedClasses": "warn"
+      },
+      "complexity": {
+        "noUselessCatch": "off"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "indentWidth": 2,
+    "indentStyle": "space",
+    "lineWidth": 100,
+    "lineEnding": "crlf"
+  },
+  "javascript": {
+    "formatter": {
+      "jsxQuoteStyle": "double",
+      "quoteStyle": "double",
+      "arrowParentheses": "asNeeded",
+      "semicolons": "always",
+      "enabled": true,
+      "bracketSpacing": true,
+      "lineEnding": "crlf"
+    }
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "ignore": [
+      ".next",
+      "node_modules/**",
+      "drizzle/**",
+      "**/dist",
+      "**/out",
+      "db/migrations/**",
+      "components/ui/**",
+      "public/**/*.js"
+    ]
+  }
+}

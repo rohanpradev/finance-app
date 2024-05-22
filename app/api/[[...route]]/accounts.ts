@@ -1,5 +1,6 @@
 import db from "@/db";
 import { accounts } from "@/db/schema";
+import { inArray } from "drizzle-orm";
 import { Elysia, t } from "elysia";
 import { clerkPlugin } from "elysia-clerk";
 
@@ -32,6 +33,18 @@ export const accountsRouter = new Elysia().use(clerkPlugin()).guard(
             body: t.Object({
               name: t.String(),
               plaidId: t.Optional(t.String()),
+            }),
+          },
+        )
+        .delete(
+          "/",
+          async ({ body: { idList } }) => {
+            await db.delete(accounts).where(inArray(accounts.id, idList)).returning();
+            return { message: "Deleted accounts successfully" };
+          },
+          {
+            body: t.Object({
+              idList: t.Array(t.String(), { minItems: 1 }),
             }),
           },
         ),

@@ -1,8 +1,8 @@
 import client from "@/lib/eden-client";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetAccount = () => {
-  useQuery({
+export const useGetAccounts = () => {
+  const query = useQuery({
     queryKey: ["accounts"],
     queryFn: async () => {
       try {
@@ -14,4 +14,5 @@ export const useGetAccount = () => {
       }
     },
   });
+  return query;
 };

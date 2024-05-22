@@ -1,13 +1,15 @@
-'use client'
+"use client";
 
 import { useUser } from "@clerk/nextjs";
 
 export const WelcomeMsg = () => {
-    const { isLoaded, user } = useUser()
-    return (
-        <div className="space-y-2 mb-4">
-            <h2 className="text-2xl lg:text-4xl text-white font-medium">Welcome Back{isLoaded ? ', ' : ' '} {user?.firstName}</h2>
-            <p className="text-sm lg:text-base text-[#89B6FD]">This is your Financial Overview Report</p>
-        </div>
-    )
+  const { isLoaded, user } = useUser();
+  return (
+    <div className="mb-4 space-y-2">
+      <h2 className="font-medium text-2xl text-white lg:text-4xl">
+        Welcome Back{isLoaded ? ", " : " "} {user?.firstName}
+      </h2>
+      <p className="text-[#89B6FD] text-sm lg:text-base">This is your Financial Overview Report</p>
+    </div>
+  );
 };

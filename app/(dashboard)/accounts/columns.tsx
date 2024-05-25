@@ -6,6 +6,7 @@ import type { accounts } from "@/db/schema";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { InferSelectModel } from "drizzle-orm";
 import { ArrowUpDown } from "lucide-react";
+import Actions from "./actions";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -59,5 +60,9 @@ export const columns: ColumnDef<Accounts>[] = [
         </Button>
       );
     },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <Actions id={row.original.id} />,
   },
 ];

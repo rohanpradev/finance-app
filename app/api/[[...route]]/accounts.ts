@@ -1,15 +1,14 @@
 import db from "@/db";
 import { accounts } from "@/db/schema";
-import { inArray } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import { Elysia, t } from "elysia";
 import { clerkPlugin } from "elysia-clerk";
 
 export const accountsRouter = new Elysia().use(clerkPlugin()).guard(
   {
-    beforeHandle({ store, set }) {
+    beforeHandle({ store, error }) {
       if (!store.auth?.userId) {
-        set.status = 401;
-        return { error: "Unauthorized" };
+        return error(401, "Unauthorized");
       }
     },
   },
@@ -20,6 +19,24 @@ export const accountsRouter = new Elysia().use(clerkPlugin()).guard(
           const data = await db.query.accounts.findMany({ columns: { id: true, name: true } });
           return data;
         })
+        .get(
+          "/:id",
+          async ({ params: { id }, store: { auth }, error }) => {
+            const data = await db.query.accounts.findFirst({
+              columns: { id: true, name: true },
+              where: and(eq(accounts.userId, auth?.userId as string), eq(accounts.id, id)),
+            });
+            if (!data) {
+              return error(404, "Not Found");
+            }
+            return data;
+          },
+          {
+            params: t.Object({
+              id: t.String(),
+            }),
+          },
+        )
         .post(
           "/",
           async ({ body: { name }, store: { auth } }) => {
@@ -45,6 +62,28 @@ export const accountsRouter = new Elysia().use(clerkPlugin()).guard(
           {
             body: t.Object({
               idList: t.Array(t.String(), { minItems: 1 }),
+            }),
+          },
+        )
+        .patch(
+          "/:id",
+          async ({ params: { id }, body: { name }, store: { auth }, error }) => {
+            const [data] = await db
+              .update(accounts)
+              .set({ name })
+              .where(and(eq(accounts.userId, auth?.userId as string), eq(accounts.id, id)))
+              .returning();
+            if (!data) {
+              return error(404, "Not Found");
+            }
+            return data;
+          },
+          {
+            params: t.Object({
+              id: t.String(),
+            }),
+            body: t.Object({
+              name: t.String(),
             }),
           },
         ),

@@ -26,7 +26,6 @@ export const Navigation = () => {
     router.push(route);
     setIsOpen(false);
   };
-  console.log({ isMobile });
 
   if (isMobile) {
     return (

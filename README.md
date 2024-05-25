@@ -1,5 +1,3 @@
-Absolutely, let's make sure this README shines for recruiters:
-
 # Finance Website
 
 Welcome to our Finance SaaS Platform! This comprehensive 11-hour tutorial will guide you through creating your very own platform, equipped with features to efficiently track your income and expenses, categorize transactions, and manage accounts. By the end, you'll have a powerful tool at your disposal, capable of importing transactions, connecting to bank accounts, and even monetizing your product.

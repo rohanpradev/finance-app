@@ -6,3 +6,10 @@ export const accounts = pgTable("accounts", {
   userId: text("user_id").notNull(),
   plaidId: text("plaid_id"),
 });
+
+export const categories = pgTable("categories", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  userId: text("user_id").notNull(),
+  plaidId: text("plaid_id"),
+});

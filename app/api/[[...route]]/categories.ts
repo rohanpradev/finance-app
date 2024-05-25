@@ -1,10 +1,10 @@
 import db from "@/db";
-import { accounts } from "@/db/schema";
+import { categories } from "@/db/schema";
 import { and, eq, inArray } from "drizzle-orm";
 import { Elysia, t } from "elysia";
 import { clerkPlugin } from "elysia-clerk";
 
-export const accountsRouter = new Elysia().use(clerkPlugin()).guard(
+export const categoriesRouter = new Elysia().use(clerkPlugin()).guard(
   {
     beforeHandle({ store, error }) {
       if (!store.auth?.userId) {
@@ -13,18 +13,18 @@ export const accountsRouter = new Elysia().use(clerkPlugin()).guard(
     },
   },
   app =>
-    app.group("/accounts", app =>
+    app.group("/categories", app =>
       app
         .get("/", async () => {
-          const data = await db.query.accounts.findMany({ columns: { id: true, name: true } });
+          const data = await db.query.categories.findMany({ columns: { id: true, name: true } });
           return data;
         })
         .get(
           "/:id",
           async ({ params: { id }, store: { auth }, error }) => {
-            const data = await db.query.accounts.findFirst({
+            const data = await db.query.categories.findFirst({
               columns: { id: true, name: true },
-              where: and(eq(accounts.userId, auth?.userId as string), eq(accounts.id, id)),
+              where: and(eq(categories.userId, auth?.userId as string), eq(categories.id, id)),
             });
             if (!data) {
               return error(404, "Not Found");
@@ -41,7 +41,7 @@ export const accountsRouter = new Elysia().use(clerkPlugin()).guard(
           "/",
           async ({ body: { name }, store: { auth } }) => {
             const [data] = await db
-              .insert(accounts)
+              .insert(categories)
               .values({ name, userId: auth?.userId as string })
               .returning();
             return data;
@@ -56,7 +56,10 @@ export const accountsRouter = new Elysia().use(clerkPlugin()).guard(
         .delete(
           "/",
           async ({ body: { idList } }) => {
-            const data = await db.delete(accounts).where(inArray(accounts.id, idList)).returning();
+            const data = await db
+              .delete(categories)
+              .where(inArray(categories.id, idList))
+              .returning();
             return data;
           },
           {
@@ -69,9 +72,9 @@ export const accountsRouter = new Elysia().use(clerkPlugin()).guard(
           "/:id",
           async ({ params: { id }, body: { name }, store: { auth }, error }) => {
             const [data] = await db
-              .update(accounts)
+              .update(categories)
               .set({ name })
-              .where(and(eq(accounts.userId, auth?.userId as string), eq(accounts.id, id)))
+              .where(and(eq(categories.userId, auth?.userId as string), eq(categories.id, id)))
               .returning();
             if (!data) {
               return error(404, "Not Found");

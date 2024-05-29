@@ -1,14 +1,16 @@
+import type { transactions } from "@/db/schema";
 import client from "@/lib/eden-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { InferInsertModel } from "drizzle-orm";
 import { toast } from "sonner";
 
-export const useEditAccount = (id: string) => {
+export const useEditTransaction = (id: string) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async (values: { name: string }) => {
+    mutationFn: async (values: Partial<InferInsertModel<typeof transactions>>) => {
       try {
-        const { data, error } = await client.api.accounts({ id }).patch(values);
+        const { data, error } = await client.api.transactions({ id }).patch(values as any);
         if (error) throw error;
         return data;
       } catch (error) {
@@ -17,11 +19,10 @@ export const useEditAccount = (id: string) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
-      queryClient.invalidateQueries({ queryKey: ["account", { id }] });
-      toast.success("Account updated");
+      toast.success("Transaction updated");
     },
     onError: () => {
-      toast.error("Failed to edit account");
+      toast.error("Failed to edit transaction");
     },
   });
 

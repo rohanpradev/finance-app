@@ -9,7 +9,7 @@ type Action = {
   onClose: () => void;
 };
 
-export const useNewAccount = create<State & Action>(set => ({
+export const useNewTransaction = create<State & Action>(set => ({
   isOpen: false,
   onOpen: () => {
     set({ isOpen: true });

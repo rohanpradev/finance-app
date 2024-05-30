@@ -29,7 +29,7 @@ export const transactionsRouter = new Elysia().use(clerkPlugin()).guard(
               .select({
                 id: transactions.id,
                 category: categories.name,
-                categoryid: transactions.categoryId,
+                categoryId: transactions.categoryId,
                 payee: transactions.payee,
                 amount: transactions.amountInCents,
                 notes: transactions.notes,
@@ -39,7 +39,7 @@ export const transactionsRouter = new Elysia().use(clerkPlugin()).guard(
               })
               .from(transactions)
               .innerJoin(accounts, eq(transactions.accountId, accounts.id))
-              .leftJoin(accounts, eq(transactions.categoryId, categories.id))
+              .leftJoin(categories, eq(transactions.categoryId, categories.id))
               .where(
                 and(
                   accountId ? eq(transactions.accountId, accountId) : undefined,

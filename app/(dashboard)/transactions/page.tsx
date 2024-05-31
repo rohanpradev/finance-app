@@ -48,7 +48,7 @@ const TransactionsPage = () => {
           <DataTable
             columns={columns}
             data={transactionsQuery.data ?? []}
-            filterKey="name"
+            filterKey="payee"
             disabled={isDisabled}
             onDelete={rows => {
               const idList = rows.map(({ original: { id } }) => id);

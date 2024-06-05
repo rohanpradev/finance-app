@@ -64,7 +64,7 @@ export const transactionsRouter = new Elysia().use(clerkPlugin()).guard(
             const [data] = await db
               .select({
                 id: transactions.id,
-                categoryid: transactions.categoryId,
+                categoryId: transactions.categoryId,
                 payee: transactions.payee,
                 amount: transactions.amountInCents,
                 notes: transactions.notes,
